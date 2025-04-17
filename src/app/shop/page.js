@@ -1,7 +1,7 @@
 // src/app/shop/page.js
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { Container, Grid, Typography, Box } from "@mui/material";
 import Navbar from "@/components/Navbar";
@@ -103,7 +103,7 @@ export default function ShopPage() {
   };
 
   return (
-    <>
+    <Suspense fallback={<div>Loading...</div>}>
       <Box sx={{ borderBottom: "2px solid #ddd" }}>
         <Navbar
           cartCount={cart.reduce((sum, item) => sum + (item.quantity || 1), 0)}
@@ -171,6 +171,6 @@ export default function ShopPage() {
           )}
         </Grid>
       </Container>
-    </>
+    </Suspense>
   );
 }
