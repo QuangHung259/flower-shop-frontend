@@ -31,17 +31,13 @@ export default function AdminProductPage() {
   });
   const router = useRouter();
 
-  const fetchProducts = async () => {
+  const fetchProducts = useCallback(async () => {
     try {
       const res = await getProducts();
       setProducts(res.data);
     } catch (err) {
       console.error("Lỗi khi lấy danh sách sản phẩm:", err);
     }
-  };
-
-  useEffect(() => {
-    fetchProducts();
   }, []);
 
   const handleDelete = async (id) => {
@@ -96,7 +92,7 @@ export default function AdminProductPage() {
             {products.map((product) => (
               <TableRow key={product._id}>
                 <TableCell>
-                  <img
+                  <Image
                     src={product.imageUrl}
                     alt={product.name}
                     width={60}

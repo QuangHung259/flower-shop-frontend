@@ -154,7 +154,7 @@ export default function ShopPage() {
 
         {query && (
           <Typography variant="h6" sx={{ mb: 2 }}>
-            Kết quả tìm kiếm cho: "<strong>{query}</strong>"
+            Kết quả tìm kiếm cho: &quot;<strong>{query}</strong>&quot;
           </Typography>
         )}
 

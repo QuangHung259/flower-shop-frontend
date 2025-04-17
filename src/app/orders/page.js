@@ -158,7 +158,7 @@ export default function OrdersPage() {
               key={index}
               sx={{ display: "flex", alignItems: "center", mb: 1 }}
             >
-              <img
+              <Img
                 src={item.product?.imageUrl || "/images/default.jpg"}
                 alt={item.product?.name || "Sản phẩm"}
                 style={{ width: 50, height: 50, marginRight: 10 }}

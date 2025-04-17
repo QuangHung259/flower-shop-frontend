@@ -295,7 +295,7 @@ export default function CheckoutPage() {
 
               {cart.map((item, index) => (
                 <Box key={index} sx={{ display: "flex", mb: 2 }}>
-                  <img
+                  <Img
                     src={item.imageUrl}
                     alt={item.name}
                     style={{

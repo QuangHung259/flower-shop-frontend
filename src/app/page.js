@@ -101,8 +101,8 @@ export default function HomePage() {
             𝓯𝓵𝓸𝓻𝓪𝓵 &quot;𝓱𝓪𝓿𝓮𝓷&quot;
           </Typography>
           <Typography variant="h6" sx={{ mt: 2, mb: 4 }} fontStyle={"italic"}>
-            "Gửi gắm yêu thương trọn vẹn qua từng đóa hoa, mang đến những khoảnh
-            khắc ý nghĩa."
+            &quot;Gửi gắm yêu thương trọn vẹn qua từng đóa hoa, mang đến những
+            khoảnh khắc ý nghĩa.&quot;
           </Typography>
           <Button
             variant="contained"
@@ -387,7 +387,7 @@ export default function HomePage() {
                   }}
                 />
                 <Typography variant="body1" fontStyle="italic" sx={{ mb: 2 }}>
-                  "{user.feedback}"
+                  &quot;{user.feedback}&quot;
                 </Typography>
                 <Box sx={{ color: "#FFD700", mb: 1 }}>{"★★★★★"}</Box>
                 <Typography fontWeight="bold">{user.name}</Typography>

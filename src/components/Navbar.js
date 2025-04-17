@@ -97,7 +97,7 @@ export default function Navbar() {
         {/* Logo bên trái */}
         <Box sx={{ flex: 1 }}>
           <Link href="/" passHref>
-            <img
+            <Image
               src="/images/logo.png"
               alt="Logo"
               style={{ height: "60px", cursor: "pointer" }}
