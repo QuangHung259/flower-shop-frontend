@@ -67,9 +67,11 @@ export default function AdminLayout({ children }) {
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
+    localStorage.removeItem("userEmail");
     setUser(null);
     setCart([]);
-    router.push("/login");
+    window.dispatchEvent(new Event("storage")); //các component khác sẽ biết là đã logout
+    router.push("/auth/login");
   };
 
   const drawer = (
