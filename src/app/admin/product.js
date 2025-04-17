@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import {
   Container,
   Typography,
@@ -18,7 +18,7 @@ import {
 import { Edit, Delete, Add } from "@mui/icons-material";
 import axios from "axios";
 import ProductForm from "../../../components/ProductForm";
-import Img from "next/image";
+import Image from "next/image";
 
 export default function AdminProducts() {
   const [products, setProducts] = useState([]);
@@ -88,7 +88,7 @@ export default function AdminProducts() {
                 <TableCell>{product.name}</TableCell>
                 <TableCell>{product.price}₫</TableCell>
                 <TableCell>
-                  <Img src={product.image} alt={product.name} width="50" />
+                  <Image src={product.image} alt={product.name} width="50" />
                 </TableCell>
                 <TableCell>
                   <IconButton
