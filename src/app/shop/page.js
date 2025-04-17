@@ -1,7 +1,7 @@
 // src/app/shop/page.js
 "use client";
 
-import { useState, useEffect, Suspense } from "react";
+import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { Container, Grid, Typography, Box } from "@mui/material";
 import Navbar from "@/components/Navbar";
