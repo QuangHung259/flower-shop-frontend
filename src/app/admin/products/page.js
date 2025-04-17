@@ -21,6 +21,7 @@ import { Add, Delete, Edit } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getProducts, deleteProduct } from "@/lib/productApi";
+import Image from "next/image";
 
 export default function AdminProductPage() {
   const [products, setProducts] = useState([]);

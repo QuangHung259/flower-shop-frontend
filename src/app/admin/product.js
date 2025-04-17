@@ -25,14 +25,14 @@ export default function AdminProducts() {
   const [open, setOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
 
-  useEffect(() => {
-    fetchProducts();
-  }, [search]);
-
-  const fetchProducts = async () => {
+  const fetchProducts = useCallback(async () => {
     const res = await axios.get(`/api/products?name=${search}`);
     setProducts(res.data);
-  };
+  }, [search]); // fetchProducts sẽ tự update khi search thay đổi
+
+  useEffect(() => {
+    fetchProducts();
+  }, [fetchProducts]);
 
   const handleDelete = async (id) => {
     if (confirm("Bạn có chắc muốn xóa sản phẩm này?")) {
@@ -87,7 +87,7 @@ export default function AdminProducts() {
                 <TableCell>{product.name}</TableCell>
                 <TableCell>{product.price}₫</TableCell>
                 <TableCell>
-                  <img src={product.image} alt={product.name} width="50" />
+                  <Img src={product.image} alt={product.name} width="50" />
                 </TableCell>
                 <TableCell>
                   <IconButton
@@ -99,7 +99,10 @@ export default function AdminProducts() {
                   >
                     <Edit />
                   </IconButton>
-                  <IconButton color="error" onClick={() => handleDelete(product._id)}>
+                  <IconButton
+                    color="error"
+                    onClick={() => handleDelete(product._id)}
+                  >
                     <Delete />
                   </IconButton>
                 </TableCell>
@@ -109,7 +112,12 @@ export default function AdminProducts() {
         </Table>
       </TableContainer>
 
-      <ProductForm open={open} handleClose={() => setOpen(false)} product={selectedProduct} refresh={fetchProducts} />
+      <ProductForm
+        open={open}
+        handleClose={() => setOpen(false)}
+        product={selectedProduct}
+        refresh={fetchProducts}
+      />
     </Container>
   );
 }

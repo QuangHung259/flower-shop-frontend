@@ -23,6 +23,7 @@ import {
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Img from "next/image";
 
 export default function CheckoutPage() {
   const router = useRouter();
