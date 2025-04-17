@@ -1,10 +1,12 @@
+//src/app/shop/page.js
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { Container, Grid, Typography, Box } from "@mui/material";
 import Navbar from "@/components/Navbar";
 import ProductCard from "@/components/ProductCard";
+import SearchQuery from "./SearchQuery";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -151,26 +153,33 @@ export default function ShopPage() {
             </Box>
           ))}
         </Box>
+        <Suspense fallback={<div>Loading...</div>}>
+          <SearchQuery>
+            {(query) => (
+              <>
+                {query && (
+                  <Typography variant="h6" sx={{ mb: 2 }}>
+                    Kết quả tìm kiếm cho: &quot;<strong>{query}</strong>&quot;
+                  </Typography>
+                )}
 
-        {query && (
-          <Typography variant="h6" sx={{ mb: 2 }}>
-            Kết quả tìm kiếm cho: &quot;<strong>{query}</strong>&quot;
-          </Typography>
-        )}
-
-        <Grid container spacing={3} justifyContent="center">
-          {filteredProducts.length > 0 ? (
-            filteredProducts.map((product) => (
-              <Grid item xs={12} sm={6} md={3} key={product._id}>
-                <ProductCard product={product} addToCart={addToCart} />
-              </Grid>
-            ))
-          ) : (
-            <Typography variant="body1" sx={{ mt: 4 }}>
-              Không tìm thấy sản phẩm nào phù hợp.
-            </Typography>
-          )}
-        </Grid>
+                <Grid container spacing={3} justifyContent="center">
+                  {filteredProducts.length > 0 ? (
+                    filteredProducts.map((product) => (
+                      <Grid item xs={12} sm={6} md={3} key={product._id}>
+                        <ProductCard product={product} addToCart={addToCart} />
+                      </Grid>
+                    ))
+                  ) : (
+                    <Typography variant="body1" sx={{ mt: 4 }}>
+                      Không tìm thấy sản phẩm nào phù hợp.
+                    </Typography>
+                  )}
+                </Grid>
+              </>
+            )}
+          </SearchQuery>
+        </Suspense>
       </Container>
     </>
   );
