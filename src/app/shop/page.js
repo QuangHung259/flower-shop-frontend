@@ -6,6 +6,7 @@ import { useSearchParams } from "next/navigation";
 import { Container, Grid, Typography, Box } from "@mui/material";
 import Navbar from "@/components/Navbar";
 import ProductCard from "@/components/ProductCard";
+import { Suspense } from "react";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
