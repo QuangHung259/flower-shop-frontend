@@ -98,7 +98,7 @@ export default function HomePage() {
         />
         <Box sx={{ position: "relative", zIndex: 1 }}>
           <Typography variant="h3" fontWeight="bold">
-            𝓯𝓵𝓸𝓻𝓪𝓵 𝓱𝓪𝓿𝓮𝓷
+            𝓯𝓵𝓸𝓻𝓪𝓵 &quot;𝓱𝓪𝓿𝓮𝓷&quot;
           </Typography>
           <Typography variant="h6" sx={{ mt: 2, mb: 4 }} fontStyle={"italic"}>
             "Gửi gắm yêu thương trọn vẹn qua từng đóa hoa, mang đến những khoảnh
