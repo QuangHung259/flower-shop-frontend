@@ -1,12 +1,11 @@
-//src/app/shop/page.js
+// src/app/shop/page.js
 "use client";
 
-import { useState, useEffect, Suspense } from "react";
+import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { Container, Grid, Typography, Box } from "@mui/material";
 import Navbar from "@/components/Navbar";
 import ProductCard from "@/components/ProductCard";
-import SearchQuery from "./SearchQueryProvider";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -21,7 +20,7 @@ export default function ShopPage() {
   const searchParams = useSearchParams();
   const query = searchParams.get("query")?.toLowerCase() || "";
 
-  // 🔄 Fetch sản phẩm từ API
+  // Fetch sản phẩm
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -32,11 +31,10 @@ export default function ShopPage() {
         console.error("Lỗi khi lấy sản phẩm:", error);
       }
     };
-
     fetchProducts();
   }, []);
 
-  // 🔄 Fetch danh mục từ API
+  // Fetch danh mục
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -47,31 +45,30 @@ export default function ShopPage() {
         console.error("Lỗi khi lấy danh mục:", error);
       }
     };
-
     fetchCategories();
   }, []);
 
-  // 🧠 Lọc sản phẩm mỗi khi sản phẩm, tìm kiếm, hoặc danh mục thay đổi
+  // Lọc sản phẩm khi query hoặc danh mục thay đổi
   useEffect(() => {
-    let updated = [...products];
+    let updatedProducts = [...products];
 
     if (query) {
-      updated = updated.filter((product) =>
+      updatedProducts = updatedProducts.filter((product) =>
         product.name.toLowerCase().includes(query)
       );
     }
 
     if (selectedCategory !== "all") {
-      updated = updated.filter((product) => {
+      updatedProducts = updatedProducts.filter((product) => {
         const cat = product.category;
         return cat === selectedCategory || cat?._id === selectedCategory;
       });
     }
 
-    setFilteredProducts(updated);
+    setFilteredProducts(updatedProducts);
   }, [products, query, selectedCategory]);
 
-  // 🔐 Lấy user & cart theo userId
+  // Lấy cart & userId
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
     const id = user?._id;
@@ -82,7 +79,7 @@ export default function ShopPage() {
     setCart(storedCart);
   }, []);
 
-  // ➕ Thêm vào giỏ hàng
+  // Thêm vào giỏ hàng
   const addToCart = (product) => {
     if (!userId) {
       alert("Vui lòng đăng nhập để thêm vào giỏ hàng!");
@@ -153,33 +150,26 @@ export default function ShopPage() {
             </Box>
           ))}
         </Box>
-        <Suspense fallback={<div>Loading...</div>}>
-          <SearchQuery>
-            {(query) => (
-              <>
-                {query && (
-                  <Typography variant="h6" sx={{ mb: 2 }}>
-                    Kết quả tìm kiếm cho: &quot;<strong>{query}</strong>&quot;
-                  </Typography>
-                )}
 
-                <Grid container spacing={3} justifyContent="center">
-                  {filteredProducts.length > 0 ? (
-                    filteredProducts.map((product) => (
-                      <Grid item xs={12} sm={6} md={3} key={product._id}>
-                        <ProductCard product={product} addToCart={addToCart} />
-                      </Grid>
-                    ))
-                  ) : (
-                    <Typography variant="body1" sx={{ mt: 4 }}>
-                      Không tìm thấy sản phẩm nào phù hợp.
-                    </Typography>
-                  )}
-                </Grid>
-              </>
-            )}
-          </SearchQuery>
-        </Suspense>
+        {query && (
+          <Typography variant="h6" sx={{ mb: 2 }}>
+            Kết quả tìm kiếm cho: &quot;<strong>{query}</strong>&quot;
+          </Typography>
+        )}
+
+        <Grid container spacing={3} justifyContent="center">
+          {filteredProducts.length > 0 ? (
+            filteredProducts.map((product) => (
+              <Grid item xs={12} sm={6} md={3} key={product._id}>
+                <ProductCard product={product} addToCart={addToCart} />
+              </Grid>
+            ))
+          ) : (
+            <Typography variant="body1" sx={{ mt: 4 }}>
+              Không tìm thấy sản phẩm nào phù hợp.
+            </Typography>
+          )}
+        </Grid>
       </Container>
     </>
   );
