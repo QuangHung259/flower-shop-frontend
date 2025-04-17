@@ -1,3 +1,4 @@
+//src/app/admin/product.js
 "use client";
 
 import { useState, useEffect } from "react"; // Bỏ luôn useCallback

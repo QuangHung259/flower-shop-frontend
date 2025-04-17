@@ -1,6 +1,7 @@
 //src/admin/products/page.js
 "use client";
 
+import { useEffect, useState, useCallback } from "react"; // Sửa import nè
 import {
   Box,
   Button,
@@ -18,7 +19,6 @@ import {
   Alert,
 } from "@mui/material";
 import { Add, Delete, Edit } from "@mui/icons-material";
-import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getProducts, deleteProduct } from "@/lib/productApi";
 import Image from "next/image";
@@ -40,6 +40,10 @@ export default function AdminProductPage() {
       console.error("Lỗi khi lấy danh sách sản phẩm:", err);
     }
   }, []);
+
+  useEffect(() => {
+    fetchProducts();
+  }, [fetchProducts]);
 
   const handleDelete = async (id) => {
     if (confirm("Bạn có chắc muốn xóa sản phẩm này không?")) {
