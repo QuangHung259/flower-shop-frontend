@@ -18,6 +18,7 @@ import {
 import { Edit, Delete, Add } from "@mui/icons-material";
 import axios from "axios";
 import ProductForm from "../../../components/ProductForm";
+import Img from "next/image";
 
 export default function AdminProducts() {
   const [products, setProducts] = useState([]);
