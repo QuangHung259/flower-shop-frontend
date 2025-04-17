@@ -102,7 +102,7 @@ export default function HomePage() {
             𝓯𝓵𝓸𝓻𝓪𝓵 𝓱𝓪𝓿𝓮𝓷
           </Typography>
           <Typography variant="h6" sx={{ mt: 2, mb: 4 }} fontStyle={"italic"}>
-            "Gửi gắm yêu thương trọn vẹn qua từng đóa hoa, mang đến những khoảnh khắc ý nghĩa." 
+          &quot;Gửi gắm yêu thương trọn vẹn qua từng đóa hoa, mang đến những khoảnh khắc ý nghĩa.&quot;
           </Typography>
           <Button
             variant="contained"
@@ -142,7 +142,7 @@ export default function HomePage() {
       <Typography variant="h4" fontWeight="bold" color="#ec407a">
         Thiết kế bó hoa cho riêng bạn
       </Typography>
-      <Typography variant="h8" color="#ef6694">
+      <Typography variant="subtitle1" color="#ef6694">
         Floral Heaven – Biến Ý Tưởng Của Bạn Thành Những Bó Hoa Tuyệt Đẹp!
       </Typography>
       <Typography variant="body1" sx={{ mt: 4 }} fontSize={21}>
@@ -166,7 +166,7 @@ export default function HomePage() {
       <Typography variant="h4" fontWeight="bold" color="#ab47bc">
         Tô màu cho cuộc sống của bạn
       </Typography>
-      <Typography variant="h8" fontWeight="bold" color="#bb6bc9">
+      <Typography variant="subtitle1" color="#bb6bc9">
         Hãy để Floral Heaven giúp bạn tô màu cho cuộc sống!
       </Typography>
       <Typography variant="body1" sx={{ mt: 4 }} fontSize={21}>
@@ -358,7 +358,7 @@ export default function HomePage() {
             height: "100%",
           }}
         >
-          <Image
+      <Image
             src={user.avatar}
             alt={user.name}
             width={80}
@@ -370,7 +370,7 @@ export default function HomePage() {
             }}
           />
           <Typography variant="body1" fontStyle="italic" sx={{ mb: 2 }}>
-            "{user.feedback}"
+          &quot;{user.feedback} &quot;
           </Typography>
            {/* ⭐⭐⭐⭐⭐ */}
           <Box sx={{ color: "#FFD700", mb: 1 }}>
