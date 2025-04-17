@@ -19,7 +19,6 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import SearchIcon from "@mui/icons-material/Search";
 import PersonIcon from "@mui/icons-material/Person";
 import LogoutIcon from "@mui/icons-material/Logout";
-import Image from "next/image";
 
 export default function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -98,7 +97,7 @@ export default function Navbar() {
         {/* Logo bên trái */}
         <Box sx={{ flex: 1 }}>
           <Link href="/" passHref>
-            <Image
+            <img
               src="/images/logo.png"
               alt="Logo"
               style={{ height: "60px", cursor: "pointer" }}

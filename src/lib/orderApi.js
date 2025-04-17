@@ -7,23 +7,23 @@ const token = () =>
   typeof window !== "undefined" && localStorage.getItem("token");
 
 export const getOrders = () =>
-  axios.get(`${API_URL}/api/orders`, {
+  axios.get(`${API}/api/orders`, {
     headers: { Authorization: `Bearer ${token()}` },
   });
 
 export const getOrderById = (id) =>
-  axios.get(`${API_URL}/api/orders/${id}`, {
+  axios.get(`${API}/api/orders/${id}`, {
     headers: { Authorization: `Bearer ${token()}` },
   });
 
 export const deleteOrder = (id) =>
-  axios.delete(`${API_URL}/api/orders/${id}`, {
+  axios.delete(`${API}/api/orders/${id}`, {
     headers: { Authorization: `Bearer ${token()}` },
   });
 
 export const updateOrderStatus = (id, status) =>
   axios.put(
-    `${API_URL}/api/orders/${id}`,
+    `${API}/api/orders/${id}`,
     { status },
     {
       headers: { Authorization: `Bearer ${token()}` },

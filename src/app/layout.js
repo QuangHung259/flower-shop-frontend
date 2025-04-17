@@ -1,20 +1,17 @@
-"use client";
-
+// app/layout.js
 import ThemeRegistry from "@/components/ThemeRegistry";
-import Footer from "@/components/Footer";
-import { usePathname } from "next/navigation";
+import "./globals.css";  // Thêm các file CSS toàn cục
+import ClientWrapper from "@/components/ClientWrapper";  // Import ClientWrapper
+
+export const metadata = {
+  title: "Floral Haven",
+  description: "Trang web bán hoa trực tuyến",
+  icons: {
+    icon: "/Favicon.png", // Đường dẫn favicon
+  },
+};
 
 export default function RootLayout({ children }) {
-  const pathname = usePathname();
-
-  // Các route không hiển thị footer
-  const hideFooterRoutes = [
-    "/auth/login",
-    "/auth/register",
-    "/auth/forgot-password",
-  ];
-  const hideFooter = hideFooterRoutes.includes(pathname);
-
   return (
     <html lang="vi">
       <body
@@ -26,8 +23,7 @@ export default function RootLayout({ children }) {
         }}
       >
         <ThemeRegistry>
-          <main style={{ flex: 1 }}>{children}</main>
-          {!hideFooter && <Footer />}
+          <ClientWrapper>{children}</ClientWrapper>
         </ThemeRegistry>
       </body>
     </html>

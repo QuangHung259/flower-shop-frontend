@@ -1,3 +1,4 @@
+//src/app/orders/page.js
 "use client";
 
 import { useEffect, useState } from "react";
@@ -16,7 +17,6 @@ import {
   Alert as MuiAlert,
 } from "@mui/material";
 import React from "react";
-import Img from "next/image";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -33,13 +33,14 @@ export default function OrdersPage() {
     severity: "success",
   });
 
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
   const handleChangeTab = (_, newValue) => setTab(newValue);
 
   useEffect(() => {
     const fetchOrders = async () => {
       try {
         const token = localStorage.getItem("token");
-        const API_URL = process.env.NEXT_PUBLIC_API_URL;
         const res = await fetch(`${API_URL}/api/orders/my-orders`, {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -58,7 +59,7 @@ export default function OrdersPage() {
     };
 
     fetchOrders();
-  }, []);
+  }, [API_URL]);
 
   const handleCancelOrder = async (id) => {
     if (!window.confirm("Bạn chắc chắn muốn hủy đơn hàng này?")) return;
@@ -66,7 +67,6 @@ export default function OrdersPage() {
     setCanceling(id);
     try {
       const token = localStorage.getItem("token");
-      const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
       const res = await fetch(`${API_URL}/api/orders/cancel/${id}`, {
         method: "PUT",
@@ -154,26 +154,35 @@ export default function OrdersPage() {
         <Divider sx={{ my: 2 }} />
 
         {Array.isArray(order.products) && order.products.length > 0 ? (
-          order.products.map((item, index) => (
-            <Box
-              key={index}
-              sx={{ display: "flex", alignItems: "center", mb: 1 }}
-            >
-              <Img
-                src={item.product?.imageUrl || "/images/default.jpg"}
-                alt={item.product?.name || "Sản phẩm"}
-                style={{ width: 50, height: 50, marginRight: 10 }}
-              />
-              <Box>
-                <Typography>{item.product?.name || "Sản phẩm"}</Typography>
-                <Typography color="text.secondary">x{item.quantity}</Typography>
+          order.products.map((item, index) => {
+            const imageUrl = item.product?.imageUrl || item.product?.image || "/images/default.jpg";
+
+            return (
+              <Box
+                key={index}
+                sx={{ display: "flex", alignItems: "center", mb: 1 }}
+              >
+                <img
+                  src={imageUrl}
+                  alt={item.product?.name || "Sản phẩm"}
+                  style={{
+                    width: 60,
+                    height: 60,
+                    marginRight: 10,
+                    borderRadius: 6,
+                    objectFit: "cover",
+                  }}
+                />
+                <Box>
+                  <Typography>{item.product?.name || "Sản phẩm"}</Typography>
+                  <Typography color="text.secondary">x{item.quantity}</Typography>
+                </Box>
+                <Box sx={{ ml: "auto", fontWeight: "bold" }}>
+                  {(item.product?.price * item.quantity || 0).toLocaleString()} VND
+                </Box>
               </Box>
-              <Box sx={{ ml: "auto", fontWeight: "bold" }}>
-                {(item.product?.price * item.quantity || 0).toLocaleString()}{" "}
-                VND
-              </Box>
-            </Box>
-          ))
+            );
+          })
         ) : (
           <Typography color="text.secondary">
             Không có sản phẩm nào trong đơn hàng.

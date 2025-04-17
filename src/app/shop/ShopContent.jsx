@@ -80,15 +80,21 @@ export default function ShopContent() {
       return;
     }
 
-    const cartKey = `cart_${userId}`;
+        const cartKey = `cart_${userId}`;
     const existingIndex = cart.findIndex((item) => item._id === product._id);
     let updatedCart = [...cart];
-
+  
     if (existingIndex !== -1) {
       updatedCart[existingIndex].quantity =
         (updatedCart[existingIndex].quantity || 1) + 1;
     } else {
-      updatedCart.push({ ...product, quantity: 1 });
+      updatedCart.push({
+        _id: product._id,
+        name: product.name,
+        price: product.price,
+        image: product.image || product.imageUrl,
+        quantity: 1,
+      });
     }
 
     setCart(updatedCart);

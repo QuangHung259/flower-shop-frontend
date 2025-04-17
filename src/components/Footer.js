@@ -45,7 +45,7 @@ const Footer = () => {
               Liên hệ
             </Typography>
             <Typography variant="body2" color="text.secondary">📍 69/68 Đ.Đặng Thuỳ Trâm, Bình Thạnh,TP.Hồ Chí Minh</Typography>
-            <Typography variant="body2" color="text.secondary">📞 0123 456 789</Typography>
+            <Typography variant="body2" color="text.secondary">📞 0336567177</Typography>
             <Typography variant="body2" color="text.secondary">📧 contact@floralhaven.vn</Typography>
 
             {/* MXH */}

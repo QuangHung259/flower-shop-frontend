@@ -114,7 +114,7 @@ export default function ContactPage() {
             </Box>
             <Box display="flex" alignItems="center" mb={2}>
               <PhoneIcon color="secondary" sx={{ mr: 2 }} />
-              <Typography>0123 456 789</Typography>
+              <Typography>0336567177</Typography>
             </Box>
             <Box display="flex" alignItems="center">
               <EmailIcon color="secondary" sx={{ mr: 2 }} />

@@ -1,10 +1,10 @@
+"use client";
+
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { CardContent, Typography, Box, IconButton } from "@mui/material";
-import VisibilityIcon from "@mui/icons-material/Visibility";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import FavoriteIcon from "@mui/icons-material/Favorite";
 
 export default function ProductCard({ product, addToCart }) {
   const [hovered, setHovered] = useState(false);
@@ -63,11 +63,13 @@ export default function ProductCard({ product, addToCart }) {
             onMouseOver={(e) =>
               (e.currentTarget.style.transform = "scale(1.05)")
             }
-            onMouseOut={(e) => (e.currentTarget.style.transform = "scale(1)")}
+            onMouseOut={(e) =>
+              (e.currentTarget.style.transform = "scale(1)")
+            }
           />
         </Link>
 
-        {/* Hiệu ứng hover với các icon */}
+        {/* Hover icon chỉ còn giỏ hàng */}
         {hovered && (
           <Box
             sx={{
@@ -82,19 +84,9 @@ export default function ProductCard({ product, addToCart }) {
           >
             <IconButton
               sx={{ color: "white", backgroundColor: "rgba(255,255,255,0.6)" }}
-            >
-              <VisibilityIcon />
-            </IconButton>
-            <IconButton
-              sx={{ color: "white", backgroundColor: "rgba(255,255,255,0.6)" }}
               onClick={() => addToCart(product)}
             >
               <ShoppingCartIcon />
-            </IconButton>
-            <IconButton
-              sx={{ color: "white", backgroundColor: "rgba(255,255,255,0.6)" }}
-            >
-              <FavoriteIcon />
             </IconButton>
           </Box>
         )}
@@ -123,7 +115,7 @@ export default function ProductCard({ product, addToCart }) {
                 color="text.secondary"
                 sx={{ textDecoration: "line-through" }}
               >
-                {Number(product.originalPrice || 0).toLocaleString("vi-VN", {
+                {Number(product.originalPrice).toLocaleString("vi-VN", {
                   minimumFractionDigits: 0,
                 })}{" "}
                 VND

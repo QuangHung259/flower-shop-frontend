@@ -1,3 +1,4 @@
+//src/app/admin/layout.js
 "use client";
 
 import { useEffect, useState } from "react";
@@ -11,12 +12,13 @@ import {
   IconButton,
   List,
   ListItem,
-  ListItemText,
   ListItemIcon,
+  ListItemText,
   Toolbar,
   Typography,
   Button,
   Divider,
+  ListItemButton,
 } from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -80,15 +82,15 @@ export default function AdminLayout({ children }) {
       <Divider />
       <List>
         {menuItems.map((item) => (
-          <ListItem
-            key={item.to}
-            button
-            component={Link}
-            href={item.to}
-            selected={pathname === item.to}
-          >
-            <ListItemIcon>{item.icon}</ListItemIcon>
-            <ListItemText primary={item.label} />
+          <ListItem key={item.to} disablePadding>
+            <ListItemButton
+              component={Link}
+              href={item.to}
+              selected={pathname === item.to}
+            >
+              <ListItemIcon>{item.icon}</ListItemIcon>
+              <ListItemText primary={item.label} />
+            </ListItemButton>
           </ListItem>
         ))}
       </List>
@@ -115,11 +117,7 @@ export default function AdminLayout({ children }) {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      {/* Top App Bar */}
-      <AppBar
-        position="fixed"
-        sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
-      >
+      <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
         <Toolbar>
           <IconButton
             color="inherit"
@@ -135,11 +133,7 @@ export default function AdminLayout({ children }) {
         </Toolbar>
       </AppBar>
 
-      {/* Sidebar Drawer */}
-      <Box
-        component="nav"
-        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
-      >
+      <Box component="nav" sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}>
         <Drawer
           variant="temporary"
           open={mobileOpen}
@@ -171,7 +165,6 @@ export default function AdminLayout({ children }) {
         </Drawer>
       </Box>
 
-      {/* Main Content */}
       <Box
         component="main"
         sx={{

@@ -1,4 +1,3 @@
-// src/app/shop/[id]/page.js
 "use client";
 
 import { useParams, useRouter } from "next/navigation";
@@ -23,43 +22,96 @@ export default function ProductDetailPage() {
   const { id } = useParams();
   const router = useRouter();
   const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
   const [userId, setUserId] = useState(null);
   const [cartCount, setCartCount] = useState(0);
 
-  // Lấy userId từ localStorage
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
     const id = user?._id;
     setUserId(id);
-
     if (id) {
       const storedCart = JSON.parse(localStorage.getItem(`cart_${id}`)) || [];
-      const totalItems = storedCart.reduce(
-        (sum, item) => sum + item.quantity,
-        0
-      );
+      const totalItems = storedCart.reduce((sum, item) => sum + item.quantity, 0);
       setCartCount(totalItems);
     }
   }, []);
 
-  // Lấy dữ liệu sản phẩm từ API
   useEffect(() => {
+    if (!id) {
+      console.warn("⚠️ ID sản phẩm chưa sẵn sàng");
+      return;
+    }
+
     const fetchProduct = async () => {
       try {
+        console.log("🔍 Đang lấy sản phẩm ID:", id);
         const res = await fetch(`${API_URL}/api/products/${id}`);
+        if (!res.ok) {
+          console.error("❌ Không tìm thấy sản phẩm hoặc lỗi API:", res.status);
+          setProduct(null);
+          return;
+        }
         const data = await res.json();
+        console.log("✅ Dữ liệu sản phẩm:", data);
         setProduct(data);
       } catch (err) {
-        console.error("Lỗi khi lấy sản phẩm:", err);
+        console.error("❌ Lỗi khi fetch:", err);
         setProduct(null);
+      } finally {
+        setLoading(false);
       }
     };
 
-    if (id) fetchProduct();
+    fetchProduct();
   }, [id]);
 
-  if (!product) {
+  const handleQuantityChange = (type) => {
+    setQuantity((prev) => (type === "increase" ? prev + 1 : prev > 1 ? prev - 1 : 1));
+  };
+
+  const handleAddToCart = () => {
+    if (!userId) {
+      alert("Vui lòng đăng nhập để thêm sản phẩm vào giỏ!");
+      router.push("/login");
+      return;
+    }
+
+    const cartKey = `cart_${userId}`;
+    const storedCart = JSON.parse(localStorage.getItem(cartKey)) || [];
+    const existingIndex = storedCart.findIndex((item) => item._id === product._id);
+    let updatedCart = [...storedCart];
+
+    if (existingIndex !== -1) {
+      updatedCart[existingIndex].quantity += quantity;
+    } else {
+      updatedCart.push({
+        _id: product._id,
+        name: product.name,
+        price: product.price,
+        image: product.image || product.imageUrl,
+        quantity: 1,
+      });
+    }
+
+    localStorage.setItem(cartKey, JSON.stringify(updatedCart));
+    window.dispatchEvent(new Event("cartUpdated"));
+    const totalItems = updatedCart.reduce((sum, item) => sum + item.quantity, 0);
+    setCartCount(totalItems);
+    alert("Đã thêm vào giỏ hàng!");
+  };
+
+  if (!id) return null; // Tránh render khi chưa có id
+  if (loading) {
+    return (
+      <Container sx={{ mt: 10, textAlign: "center" }}>
+        <Typography variant="h6">Đang tải sản phẩm...</Typography>
+      </Container>
+    );
+  }
+
+  if (!product || Object.keys(product).length === 0) {
     return (
       <>
         <Box sx={{ borderBottom: "2px solid #ddd" }}>
@@ -73,42 +125,6 @@ export default function ProductDetailPage() {
       </>
     );
   }
-
-  const handleQuantityChange = (type) => {
-    setQuantity((prev) =>
-      type === "increase" ? prev + 1 : prev > 1 ? prev - 1 : 1
-    );
-  };
-
-  const handleAddToCart = () => {
-    if (!userId) {
-      alert("Vui lòng đăng nhập để thêm sản phẩm vào giỏ!");
-      router.push("/login");
-      return;
-    }
-
-    const cartKey = `cart_${userId}`;
-    const storedCart = JSON.parse(localStorage.getItem(cartKey)) || [];
-    const existingIndex = storedCart.findIndex(
-      (item) => item._id === product._id
-    );
-    let updatedCart = [...storedCart];
-
-    if (existingIndex !== -1) {
-      updatedCart[existingIndex].quantity += quantity;
-    } else {
-      updatedCart.push({ ...product, quantity });
-    }
-
-    localStorage.setItem(cartKey, JSON.stringify(updatedCart));
-    window.dispatchEvent(new Event("cartUpdated"));
-    const totalItems = updatedCart.reduce(
-      (sum, item) => sum + item.quantity,
-      0
-    );
-    setCartCount(totalItems);
-    alert("Đã thêm vào giỏ hàng!");
-  };
 
   return (
     <>
@@ -128,11 +144,11 @@ export default function ProductDetailPage() {
         </Breadcrumbs>
 
         <Box display="flex" flexDirection={{ xs: "column", md: "row" }} gap={4}>
-          {/* Ảnh sản phẩm */}
+          {/* Hình ảnh sản phẩm */}
           <Box flex={0.75}>
-            {product.imageUrl ? (
+            {product.imageUrl || product.image ? (
               <Image
-                src={product.imageUrl}
+                src={product.imageUrl || product.image}
                 alt={product.name}
                 width={500}
                 height={500}
@@ -141,12 +157,6 @@ export default function ProductDetailPage() {
                   width: "100%",
                   transition: "transform 0.3s ease-in-out",
                 }}
-                onMouseOver={(e) =>
-                  (e.currentTarget.style.transform = "scale(1.01)")
-                }
-                onMouseOut={(e) =>
-                  (e.currentTarget.style.transform = "scale(1)")
-                }
               />
             ) : (
               <Box
@@ -171,16 +181,11 @@ export default function ProductDetailPage() {
             <Typography variant="h4" fontWeight="bold">
               {product.name}
             </Typography>
-            <Typography
-              variant="body1"
-              color="text.secondary"
-              sx={{ my: 1, mb: 10 }}
-            >
+            <Typography variant="body1" color="text.secondary" sx={{ my: 1, mb: 4 }}>
               {product.description}
             </Typography>
-
             <Typography variant="h5" color="black">
-              {product.price.toLocaleString()} VND
+              {product.price ? product.price.toLocaleString("vi-VN") + " VND" : "Đang cập nhật"}
             </Typography>
 
             <Box
@@ -192,7 +197,7 @@ export default function ProductDetailPage() {
               }}
             >
               <Box display="flex" alignItems="center" gap={2}>
-                <Typography fontWeight="bold">Quantity:</Typography>
+                <Typography fontWeight="bold">Số lượng:</Typography>
                 <IconButton onClick={() => handleQuantityChange("decrease")}>
                   <RemoveIcon />
                 </IconButton>
@@ -202,7 +207,9 @@ export default function ProductDetailPage() {
                 </IconButton>
               </Box>
               <Typography variant="h6" fontWeight="bold" color="error">
-                {(product.price * quantity).toLocaleString()} VND
+                {product.price
+                  ? (product.price * quantity).toLocaleString("vi-VN") + " VND"
+                  : "Đang cập nhật"}
               </Typography>
             </Box>
 

@@ -196,6 +196,7 @@ export default function CartPage() {
                       <Typography>Số lượng:</Typography>
                       <Button
                         variant="outlined"
+                        color=""
                         size="small"
                         onClick={() => changeQuantity(index, -1)}
                       >
@@ -204,6 +205,7 @@ export default function CartPage() {
                       <Typography>{item.quantity}</Typography>
                       <Button
                         variant="outlined"
+                        color=""
                         size="small"
                         onClick={() => changeQuantity(index, 1)}
                       >
