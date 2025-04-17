@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react"; // Bỏ luôn useCallback
 import {
   Container,
   Typography,
@@ -26,14 +26,18 @@ export default function AdminProducts() {
   const [open, setOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
 
-  const fetchProducts = useCallback(async () => {
-    const res = await axios.get(`/api/products?name=${search}`);
-    setProducts(res.data);
-  }, [search]); // fetchProducts sẽ tự update khi search thay đổi
-
   useEffect(() => {
     fetchProducts();
-  }, [fetchProducts]);
+  }, []);
+
+  const fetchProducts = async (keyword = "") => {
+    const res = await axios.get(`/api/products?name=${keyword}`);
+    setProducts(res.data);
+  };
+
+  const handleSearch = () => {
+    fetchProducts(search);
+  };
 
   const handleDelete = async (id) => {
     if (confirm("Bạn có chắc muốn xóa sản phẩm này?")) {
@@ -55,7 +59,7 @@ export default function AdminProducts() {
         onChange={(e) => setSearch(e.target.value)}
         sx={{ mr: 2 }}
       />
-      <Button variant="contained" color="primary" onClick={fetchProducts}>
+      <Button variant="contained" color="primary" onClick={handleSearch}>
         Tìm kiếm
       </Button>
 
@@ -88,7 +92,13 @@ export default function AdminProducts() {
                 <TableCell>{product.name}</TableCell>
                 <TableCell>{product.price}₫</TableCell>
                 <TableCell>
-                  <Image src={product.image} alt={product.name} width="50" />
+                  <Image
+                    src={product.image}
+                    alt={product.name}
+                    width={50}
+                    height={50}
+                    style={{ objectFit: "cover" }}
+                  />
                 </TableCell>
                 <TableCell>
                   <IconButton
@@ -117,7 +127,7 @@ export default function AdminProducts() {
         open={open}
         handleClose={() => setOpen(false)}
         product={selectedProduct}
-        refresh={fetchProducts}
+        refresh={() => fetchProducts()}
       />
     </Container>
   );
